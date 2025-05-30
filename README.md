@@ -2,10 +2,6 @@
 [![npm version](https://badge.fury.io/js/va-design-system-monitor.svg)](https://www.npmjs.com/package/va-design-system-monitor)
 [![Downloads](https://img.shields.io/npm/dm/va-design-system-monitor.svg)](https://www.npmjs.com/package/va-design-system-monitor)
 
-> **🚨 Breaking Changes in v2.0.0**: The binary command has changed from `va-component-monitor` to `va-design-system-monitor`, and MCP server name updated. See [Migration Guide](#migration-from-v1) below.
-
-> **🚨 Breaking Changes in v2.0.0**: The binary command has changed from `va-component-monitor` to `va-design-system-monitor`, and MCP server name updated. See [Migration Guide](#migration-from-v1) below.
-
 A comprehensive tool for monitoring VA Design System component status, maturity levels, and generating implementation examples. **Now with real examples fetched directly from VA's official Storybook!** Available as both an **npm package** and **MCP (Model Context Protocol) service** for AI integration.
 
 ## ✨ Key Features
