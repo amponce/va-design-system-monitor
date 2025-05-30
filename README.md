@@ -1,4 +1,6 @@
 # VA Design System Monitor
+[![npm version](https://badge.fury.io/js/va-design-system-monitor.svg)](https://www.npmjs.com/package/va-design-system-monitor)
+[![Downloads](https://img.shields.io/npm/dm/va-design-system-monitor.svg)](https://www.npmjs.com/package/va-design-system-monitor)
 
 A comprehensive tool for monitoring VA Design System component status, maturity levels, and generating implementation examples. **Now with real examples fetched directly from VA's official Storybook!** Available as both an **npm package** and **MCP (Model Context Protocol) service** for AI integration.
 
@@ -405,7 +407,102 @@ node bin/mcp-server.js
 # Run tests
 npm test
 ```
+## 🤝 Contributing
 
+We welcome contributions from the VA developer community! Whether you're fixing bugs, adding features, or improving documentation, your help makes this tool better for everyone.
+
+### 🚀 Quick Start for Contributors
+
+```bash
+# Fork the repository on GitHub, then:
+git clone https://github.com/YOUR_USERNAME/va-design-system-monitor.git
+cd va-design-system-monitor
+npm install
+
+# Create a feature branch
+git checkout -b feature/your-feature-name
+
+# Make your changes and test them
+npm run test
+npm run dev  # Test the CLI locally
+
+# Commit your changes
+git add .
+git commit -m "feat: add your feature description"
+
+# Push and create a pull request
+git push origin feature/your-feature-name
+```
+
+### 📋 How to Contribute
+
+**🐛 Bug Reports**
+- Use the [GitHub issue tracker](https://github.com/amponce/va-design-system-monitor/issues)
+- Include steps to reproduce, expected behavior, and actual behavior
+- Add relevant system info (Node version, OS, etc.)
+
+**✨ Feature Requests**
+- Open an issue with the "enhancement" label
+- Describe the use case and expected functionality
+- Include examples of how it would be used
+
+**🔧 Code Contributions**
+- Fork the repository and create a feature branch
+- Follow existing code style and conventions
+- Add tests for new functionality
+- Update documentation as needed
+- Ensure all tests pass before submitting
+
+### 🧪 Development Workflow
+
+```bash
+# Run tests
+npm test
+
+# Start development server with file watching
+npm run dev
+
+# Test CLI commands locally
+node bin/cli.js check va-button
+
+# Test MCP server locally
+node bin/mcp-server.js
+
+# Build for production
+npm run build
+```
+
+### 📝 Code Style
+
+- Use **TypeScript** for type safety
+- Follow **ESLint** configuration
+- Write **clear, descriptive commit messages**
+- Add **JSDoc comments** for public APIs
+- Include **tests** for new features
+
+### 🎯 Areas We Need Help With
+
+- **Component Coverage**: Adding support for more VA components
+- **Framework Integration**: React, Vue, Angular examples
+- **Performance**: Caching and optimization improvements
+- **Documentation**: More examples and use cases
+- **Testing**: Edge cases and integration tests
+
+### 🔒 Security
+
+If you discover security vulnerabilities, please report them privately by emailing the maintainers rather than opening public issues.
+
+### 📜 Code of Conduct
+
+This project follows the [Contributor Covenant](https://www.contributor-covenant.org/). Please be respectful and inclusive in all interactions.
+
+### 🏆 Recognition
+
+Contributors will be recognized in our README and release notes. Thank you for helping improve VA development tooling!
+
+---
+
+**Questions?** Feel free to open an issue or reach out to the maintainers. We're here to help!
 ## 📝 License
 
 MIT License - see LICENSE file for details. 
