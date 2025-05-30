@@ -1,0 +1,164 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# VA Application Figma-to-Code Conversion Rules
+
+## Primary Directive
+When converting Figma designs to code, ALWAYS follow the VA Application Template guidelines from `.bolt/prompt`. This ensures all generated code meets VA Design System standards, accessibility requirements, and template patterns.
+
+## Figma Design Analysis Process
+
+### 1. Design Understanding
+- Analyze the Figma design structure, layout, typography, and components
+- Identify which VA Application Template layout pattern best fits the design:
+  - Full-width layout (landing pages, marketing pages)
+  - Single-column layout (forms, content pages)
+  - Two-column layout (only when explicitly needed)
+- Map design elements to existing VA Design System components
+
+### 2. Component Mapping
+Always convert Figma elements to proper VA components:
+- **Buttons** → `<va-button text="Button Text" />` (NEVER HTML buttons)
+- **Form fields** → VA form components (`<va-text-input>`, `<va-select>`, etc.)
+- **Cards** → `<va-card>` with proper slot structure
+- **Alerts** → `<va-alert>` with appropriate types
+- **Navigation** → VA navigation components
+
+### 3. Layout Implementation
+Follow the exact Layout component patterns from .bolt/prompt:
+```jsx
+// Single-column (default)
+<Layout title="Page Title">
+  <h1 className="vads-u-font-family--serif vads-u-font-size--h2 vads-u-margin-top--0 vads-u-margin-bottom--3 vads-u-font-weight--bold">
+    Page Title
+  </h1>
+  {/* Page content */}
+</Layout>
+
+// Full-width (for landing pages)
+<Layout title="Page Title" fullWidth={true}>
+  {/* Full-width sections with proper containers */}
+</Layout>
+```
+
+### 4. Typography and Styling
+- **Headings**: Use `vads-u-font-family--serif` with Bitter font
+- **Body text**: Use `vads-u-font-family--sans` with Source Sans Pro
+- **H1 styling**: `vads-u-font-size--h2 vads-u-font-weight--bold vads-u-margin-top--0 vads-u-margin-bottom--3`
+- **H2 styling**: `vads-u-font-size--h3 vads-u-margin-top--4 vads-u-margin-bottom--3 vads-u-font-weight--bold`
+- Use VA utility classes for all spacing, colors, and responsive behavior
+
+### 5. Accessibility Requirements
+- Ensure all interactive elements are keyboard accessible
+- Use semantic HTML elements
+- Include proper ARIA attributes
+- Follow WCAG 2.1 AA standards
+- Test with screen reader compatibility in mind
+
+## Figma-Specific Conversion Guidelines
+
+### Color Conversion
+- Map Figma colors to VA Design System color tokens
+- Use `vads-u-background-color--[token]` and `vads-u-color--[token]` classes
+- Prioritize VA color palette over custom colors
+
+### Spacing and Grid
+- Convert Figma spacing to VA 8-point grid system
+- Use `vads-u-margin--` and `vads-u-padding--` utility classes
+- Implement responsive grid using `vads-grid-container`, `vads-grid-row`, `vads-grid-col-*`
+
+### Images and Assets
+- Reference stock photos from Unsplash with known URLs
+- Use proper `alt` attributes for accessibility
+- Implement responsive image behavior
+
+## Code Generation Standards
+
+### File Structure
+- Create new pages in `/src/pages/` following existing patterns
+- Add route to `App.jsx`
+- Include homepage link if appropriate
+- Follow the project structure defined in .bolt/prompt
+
+### React Patterns
+- Use functional components with hooks
+- Implement proper state management
+- Follow existing coding patterns in the template
+- Use standard web components over React bindings when possible
+
+### Quality Standards
+- Build to production quality
+- Ensure cross-browser compatibility
+- Implement proper error handling
+- Test responsive behavior across breakpoints
+
+## Example Conversion Workflow
+
+1. **Analyze Figma Design**: Identify layout type, components, content structure
+2. **Choose Layout Pattern**: Select appropriate Layout component configuration
+3. **Map Components**: Convert each Figma element to appropriate VA component
+4. **Implement Structure**: Build page following .bolt/prompt patterns
+5. **Apply Styling**: Use VA utility classes for consistent design
+6. **Ensure Accessibility**: Verify keyboard navigation and screen reader compatibility
+7. **Test Responsiveness**: Ensure proper behavior across all breakpoints
+
+## Critical Reminders
+- NEVER use HTML buttons - always use `<va-button text="..." />`
+- NEVER edit package.json directly - use npm commands if needed
+- ALWAYS include proper text attribute on va-button elements
+- ALWAYS use Layout component for page structure
+- ALWAYS define h1 heading within page content (not in Layout)
+- NEVER create two-column layouts unless explicitly requested
+- ALWAYS prioritize accessibility and VA Design System compliance
+
+When asked to convert a Figma design, first extract the design information using the Figma MCP server, then apply these rules to generate clean, accessible, VA Design System-compliant code that integrates seamlessly with the existing application template.
+
+## VA Component Specific Rules
+
+### VA Button Component (`va-button`)
+- **ALWAYS** use `text` attribute for visible button text - this is what users see
+- **NEVER** use only `label` attribute without `text` - this creates invisible buttons
+- Use `label` attribute ONLY when screen reader text should differ from visible text
+- Example patterns:
+  ```html
+  <!-- ✅ CORRECT: Basic button with visible text -->
+  <va-button text="Submit Application"></va-button>
+  
+  <!-- ✅ CORRECT: Different screen reader text -->
+  <va-button text="Submit" label="Submit your disability claim application"></va-button>
+  
+  <!-- ❌ WRONG: No visible text -->
+  <va-button label="Submit Application"></va-button>
+  ```
+
+### VA Component Attribute Priority Rules
+1. **Text Display Attributes** (in order of priority):
+   - `text` - for buttons, use this for visible text
+   - `headline` - for alerts, cards, use this for titles  
+   - `label` - for form inputs, use this for field labels
+   
+2. **Accessibility Attributes** (supplementary):
+   - `label` - only when different from visible text
+   - `messageAriaDescribedby` - for additional context
+   - `closeBtnAriaLabel` - for custom close button text
+
+### VA Form Component Rules
+- Form inputs MUST have `label` attribute for field labels
+- Use `name` attribute for form data binding
+- Include `required` attribute for mandatory fields
+- Use `error` attribute for validation messages
+
+### VA Alert Component Rules
+- Use `status` attribute to set alert type (info, warning, error, success)
+- Use `visible` attribute to control display
+- Use `headline` for alert titles, not `text`
+- Use `closeable` for dismissible alerts
+
+### Example Generation Rules
+When generating examples for VA components:
+1. Always check component type and use appropriate primary attributes
+2. Show progressive examples: basic → common variations → accessibility enhanced
+3. Include both minimal and comprehensive usage examples
+4. Validate that examples would render visible, functional components 

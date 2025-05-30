@@ -1,0 +1,113 @@
+{
+  "name": "va-design-system-monitor",
+  "version": "1.0.0",
+  "description": "Production-ready tool for monitoring VA Design System component status, maturity levels, and generating implementation examples - both as MCP service and programmatic API",
+  "main": "lib/index.js",
+  "bin": {
+    "va-component-monitor": "bin/mcp-server.js",
+    "va-components": "bin/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node bin/mcp-server.js",
+    "dev": "node --watch bin/mcp-server.js",
+    "cli": "node bin/cli.js",
+    "build": "node scripts/build.js",
+    "prepublishOnly": "npm run build",
+    "test": "node --test test/*.test.js",
+    "test:compatibility": "node test/node-compatibility.test.js",
+    "setup": "node scripts/setup-mcp.js",
+    "setup:npm": "node scripts/setup-mcp.js --npm",
+    "setup:local": "node scripts/setup-mcp.js",
+    "setup:manual": "node scripts/setup-mcp.js --manual",
+    "mcp": "node bin/mcp-server.js",
+    "server": "node bin/mcp-server.js",
+    "check": "node bin/cli.js check",
+    "props": "node bin/cli.js props",
+    "examples": "node bin/cli.js examples",
+    "validate": "node bin/cli.js validate",
+    "lint": "node bin/cli.js lint",
+    "list": "node bin/cli.js list",
+    "report": "node bin/cli.js report",
+    "quick:button": "node bin/cli.js quick va-button check examples",
+    "quick:alert": "node bin/cli.js quick va-alert check examples",
+    "quick:modal": "node bin/cli.js quick va-modal check examples",
+    "check:button": "node bin/cli.js check va-button",
+    "check:alert": "node bin/cli.js check va-alert",
+    "check:modal": "node bin/cli.js check va-modal",
+    "examples:button": "node bin/cli.js examples va-button",
+    "examples:alert": "node bin/cli.js examples va-alert",
+    "list:recommended": "node bin/cli.js list recommended",
+    "list:caution": "node bin/cli.js list caution",
+    "dev:watch": "node --watch bin/mcp-server.js",
+    "dev:cli": "node --watch bin/cli.js"
+  },
+  "files": [
+    "lib/",
+    "bin/",
+    "types/",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./mcp": {
+      "import": "./bin/mcp-server.js"
+    }
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  },
+  "optionalDependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.0.0"
+  },
+  "keywords": [
+    "va",
+    "veterans-affairs",
+    "design-system",
+    "components",
+    "monitoring",
+    "mcp",
+    "accessibility",
+    "government",
+    "uswds",
+    "web-components",
+    "cli",
+    "validation",
+    "lint"
+  ],
+  "author": "VA Application Template Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amponce/va-design-system-monitor.git"
+  },
+  "homepage": "https://github.com/amponce/va-design-system-monitor#readme",
+  "bugs": {
+    "url": "https://github.com/amponce/va-design-system-monitor/issues"
+  },
+  "engines": {
+    "node": ">=14.15.0",
+    "npm": ">=6.0.0"
+  },
+  "funding": {
+    "type": "government",
+    "url": "https://github.com/department-of-veterans-affairs"
+  },
+  "security": {
+    "policy": "https://github.com/amponce/va-design-system-monitor/blob/main/SECURITY.md"
+  },
+  "config": {
+    "timeout": 10000,
+    "maxRetries": 2,
+    "cacheTimeout": 300000
+  }
+}
