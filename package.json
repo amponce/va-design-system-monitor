@@ -1,10 +1,10 @@
 {
   "name": "va-design-system-monitor",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Production-ready tool for monitoring VA Design System component status, maturity levels, and generating implementation examples - both as MCP service and programmatic API",
   "main": "lib/index.js",
   "bin": {
-    "va-component-monitor": "bin/mcp-server.js",
+    "va-design-system-monitor": "bin/mcp-server.js",
     "va-components": "bin/cli.js"
   },
   "type": "module",

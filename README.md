@@ -1,5 +1,7 @@
 # VA Design System Monitor
 
+> **🚨 Breaking Changes in v2.0.0**: The binary command has changed from `va-component-monitor` to `va-design-system-monitor`, and MCP server name updated. See [Migration Guide](#migration-from-v1) below.
+
 A comprehensive tool for monitoring VA Design System component status, maturity levels, and generating implementation examples. **Now with real examples fetched directly from VA's official Storybook!** Available as both an **npm package** and **MCP (Model Context Protocol) service** for AI integration.
 
 ## ✨ Key Features
@@ -55,7 +57,7 @@ Clone and use with convenient npm scripts:
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd va-component-monitor-mcp
+cd va-design-system-monitor
 
 # Install dependencies  
 npm install
@@ -78,7 +80,10 @@ npm run setup:npm
 ### Manual MCP Configuration
 If you prefer manual setup, add this to your MCP config:
 
-**Cursor** (`~/.cursor/mcp.json`):
+**Cursor**:
+- macOS/Linux: `~/.cursor/mcp.json`
+- Windows: `%USERPROFILE%\.cursor\mcp.json` (location may vary by installation)
+
 ```json
 {
   "servers": {
@@ -91,7 +96,25 @@ If you prefer manual setup, add this to your MCP config:
 }
 ```
 
-**Claude Desktop** (`~/.config/claude-desktop/config.json`):
+**Claude Desktop**:
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- Linux: `~/.config/claude-desktop/config.json`
+
+macOS/Windows format:
+```json
+{
+  "mcpServers": {
+    "va-design-system-monitor": {
+      "command": "npx",
+      "args": ["-y", "va-design-system-monitor"],
+      "env": {}
+    }
+  }
+}
+```
+
+Linux format:
 ```json
 {
   "mcp": {
@@ -201,7 +224,7 @@ import {
   validateComponents, 
   getComponentProperties,
   getComponentExamples 
-} from '@va-application-template/component-monitor';
+} from 'va-design-system-monitor';
 
 // Check a single component
 const button = await checkComponent('va-button');
@@ -222,7 +245,7 @@ console.log(results.summary); // Validation summary
 
 ### Advanced Usage
 ```javascript
-import { VAComponentMonitor } from '@va-application-template/component-monitor';
+import { VAComponentMonitor } from 'va-design-system-monitor';
 
 const monitor = new VAComponentMonitor({
   cacheTimeout: 10 * 60 * 1000, // 10 minutes
@@ -329,12 +352,12 @@ Ask your AI assistant:
 
 ### Global Installation
 ```bash
-npm install -g @va-application-template/component-monitor
+npm install -g va-design-system-monitor
 ```
 
 ### Local Project Installation
 ```bash
-npm install @va-application-template/component-monitor
+npm install va-design-system-monitor
 ```
 
 ### MCP Server Setup
@@ -342,11 +365,14 @@ npm install @va-application-template/component-monitor
 1. **Clone the repository:**
    ```bash
    git clone <repository-url>
-   cd va-component-monitor-mcp
+   cd va-design-system-monitor
    npm install
    ```
 
-2. **Configure MCP in Cursor** (`~/.cursor/mcp.json`):
+2. **Configure MCP in Cursor**:
+   - macOS/Linux: `~/.cursor/mcp.json`
+   - Windows: `%USERPROFILE%\.cursor\mcp.json` (location may vary by installation)
+   
    ```json
    {
      "servers": {
@@ -359,7 +385,25 @@ npm install @va-application-template/component-monitor
    }
    ```
 
-3. **Configure MCP in Claude Desktop** (`~/.config/claude-desktop/config.json`):
+3. **Configure MCP in Claude Desktop**:
+   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   - Linux: `~/.config/claude-desktop/config.json`
+
+   macOS/Windows format:
+   ```json
+   {
+     "mcpServers": {
+       "va-design-system-monitor": {
+         "command": "npx",
+         "args": ["-y", "va-design-system-monitor"],
+         "env": {}
+       }
+     }
+   }
+   ```
+   
+   Linux format:
    ```json
    {
      "mcp": {
@@ -393,7 +437,7 @@ npm install @va-application-template/component-monitor
 ```bash
 # Clone and install
 git clone <repository-url>
-cd va-component-monitor-mcp
+cd va-design-system-monitor
 npm install
 
 # Run CLI locally

@@ -9,7 +9,7 @@ import {
 import { VAComponentMonitor, getOfficialExamples } from '../lib/index.js';
 
 /**
- * VA Component Monitor MCP Service
+ * VA Design System Monitor MCP Service
  * 
  * This service monitors the VA Design System component library to:
  * - Track component maturity levels and categories
@@ -19,12 +19,12 @@ import { VAComponentMonitor, getOfficialExamples } from '../lib/index.js';
  * - Fetch real examples from official VA Storybook
  */
 
-// Initialize the VA Component Monitor
+// Initialize the VA Design System Monitor
 const monitor = new VAComponentMonitor();
 
 const server = new Server(
   {
-    name: 'va-component-monitor',
+    name: 'va-design-system-monitor',
     version: '1.0.0',
   },
   {

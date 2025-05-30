@@ -1,20 +1,21 @@
 #!/usr/bin/env node
 
 /**
- * Build script for VA Component Monitor
+ * Build script for VA Design System Monitor
  * 
- * Validates package structure and prepares for publishing
+ * This script handles the build process for the VA Design System Monitor package.
+ * It copies necessary files and ensures proper structure for distribution.
  */
 
-import { readFileSync, existsSync, statSync } from 'fs';
+import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const packageRoot = join(__dirname, '..');
+const PACKAGE_ROOT = join(__dirname, '..');
 
-console.log('🔨 Building VA Component Monitor...\n');
+console.log('🔨 Building VA Design System Monitor...\n');
 
 // Check required files
 const requiredFiles = [
@@ -29,7 +30,7 @@ console.log('📋 Checking required files...');
 let allFilesExist = true;
 
 for (const file of requiredFiles) {
-  const filePath = join(packageRoot, file);
+  const filePath = join(PACKAGE_ROOT, file);
   if (existsSync(filePath)) {
     const stats = statSync(filePath);
     console.log(`✅ ${file} (${(stats.size / 1024).toFixed(1)}KB)`);
@@ -47,7 +48,7 @@ if (!allFilesExist) {
 // Validate package.json
 console.log('\n📦 Validating package.json...');
 try {
-  const packageJson = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8'));
+  const packageJson = JSON.parse(readFileSync(join(PACKAGE_ROOT, 'package.json'), 'utf8'));
   
   const requiredFields = ['name', 'version', 'description', 'main', 'bin', 'exports'];
   for (const field of requiredFields) {
@@ -63,7 +64,7 @@ try {
   if (packageJson.bin) {
     console.log('\n🔧 Checking executables...');
     for (const [name, path] of Object.entries(packageJson.bin)) {
-      const binPath = join(packageRoot, path);
+      const binPath = join(PACKAGE_ROOT, path);
       if (existsSync(binPath)) {
         console.log(`✅ ${name}: ${path}`);
       } else {
