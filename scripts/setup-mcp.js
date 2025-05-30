@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { homedir } from 'os';
+import { homedir, platform } from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,8 +11,42 @@ const __dirname = dirname(__filename);
 const PACKAGE_ROOT = join(__dirname, '..');
 const MCP_SERVER_PATH = join(PACKAGE_ROOT, 'bin', 'mcp-server.js');
 
+/**
+ * Get the correct Cursor MCP config path for the current platform
+ */
+function getCursorConfigPath() {
+  const home = homedir();
+  
+  switch (platform()) {
+    case 'darwin': // macOS
+      return join(home, '.cursor', 'mcp.json');
+    case 'win32': // Windows
+      // Note: Windows Cursor path needs verification - may vary by installation
+      // Common locations: %USERPROFILE%\.cursor\mcp.json or %APPDATA%\Cursor\User\mcp.json
+      return join(home, '.cursor', 'mcp.json');
+    default: // Linux and others
+      return join(home, '.cursor', 'mcp.json');
+  }
+}
+
+/**
+ * Get the correct Claude Desktop config path for the current platform
+ */
+function getClaudeConfigPath() {
+  const home = homedir();
+  
+  switch (platform()) {
+    case 'darwin': // macOS
+      return join(home, 'Library', 'Application Support', 'Claude', 'claude_desktop_config.json');
+    case 'win32': // Windows
+      return join(home, 'AppData', 'Roaming', 'Claude', 'claude_desktop_config.json');
+    default: // Linux and others
+      return join(home, '.config', 'claude-desktop', 'config.json');
+  }
+}
+
 function setupCursorMCP(useNpm = false) {
-  const cursorConfigPath = join(homedir(), '.cursor', 'mcp.json');
+  const cursorConfigPath = getCursorConfigPath();
   const cursorConfigDir = dirname(cursorConfigPath);
   
   // Ensure .cursor directory exists
@@ -37,18 +71,18 @@ function setupCursorMCP(useNpm = false) {
     config.servers = {};
   }
   
-  // Add VA Component Monitor server
+  // Add VA Design System Monitor server
   if (useNpm) {
-    config.servers['va-component-monitor'] = {
+    config.servers['va-design-system-monitor'] = {
       command: 'npx',
-      args: ['-y', '@va-application-template/component-monitor'],
+      args: ['-y', 'va-design-system-monitor'],
       env: {}
     };
   } else {
-    config.servers['va-component-monitor'] = {
+    config.servers['va-design-system-monitor'] = {
       command: 'node',
       args: [MCP_SERVER_PATH],
-      env: {}
+      env: { NODE_ENV: 'production' },
     };
   }
   
@@ -59,8 +93,9 @@ function setupCursorMCP(useNpm = false) {
 }
 
 function setupClaudeDesktopMCP(useNpm = false) {
-  const claudeConfigPath = join(homedir(), '.config', 'claude-desktop', 'config.json');
+  const claudeConfigPath = getClaudeConfigPath();
   const claudeConfigDir = dirname(claudeConfigPath);
+  const currentPlatform = platform();
   
   // Ensure claude-desktop directory exists
   if (!existsSync(claudeConfigDir)) {
@@ -79,27 +114,50 @@ function setupClaudeDesktopMCP(useNpm = false) {
     }
   }
   
-  // Ensure mcp.servers object exists
-  if (!config.mcp) {
-    config.mcp = {};
-  }
-  if (!config.mcp.servers) {
-    config.mcp.servers = {};
-  }
-  
-  // Add VA Component Monitor server
-  if (useNpm) {
-    config.mcp.servers['va-component-monitor'] = {
-      command: 'npx',
-      args: ['-y', '@va-application-template/component-monitor'],
-      env: {}
-    };
+  // Handle different config formats based on platform
+  if (currentPlatform === 'darwin' || currentPlatform === 'win32') {
+    // macOS and Windows use mcpServers format
+    if (!config.mcpServers) {
+      config.mcpServers = {};
+    }
+    
+    // Add VA Design System Monitor server
+    if (useNpm) {
+      config.mcpServers['va-design-system-monitor'] = {
+        command: 'npx',
+        args: ['-y', 'va-design-system-monitor'],
+        env: {}
+      };
+    } else {
+      config.mcpServers['va-design-system-monitor'] = {
+        command: 'node',
+        args: [MCP_SERVER_PATH],
+        env: { NODE_ENV: 'production' },
+      };
+    }
   } else {
-    config.mcp.servers['va-component-monitor'] = {
-      command: 'node',
-      args: [MCP_SERVER_PATH],
-      env: {}
-    };
+    // Linux uses mcp.servers format
+    if (!config.mcp) {
+      config.mcp = {};
+    }
+    if (!config.mcp.servers) {
+      config.mcp.servers = {};
+    }
+    
+    // Add VA Design System Monitor server
+    if (useNpm) {
+      config.mcp.servers['va-design-system-monitor'] = {
+        command: 'npx',
+        args: ['-y', 'va-design-system-monitor'],
+        env: {}
+      };
+    } else {
+      config.mcp.servers['va-design-system-monitor'] = {
+        command: 'node',
+        args: [MCP_SERVER_PATH],
+        env: { NODE_ENV: 'production' },
+      };
+    }
   }
   
   // Write config
@@ -109,41 +167,64 @@ function setupClaudeDesktopMCP(useNpm = false) {
 }
 
 function printManualInstructions() {
+  const currentPlatform = platform();
+  const cursorPath = getCursorConfigPath();
+  const claudePath = getClaudeConfigPath();
+  
   console.log('\n📋 Manual Setup Instructions:\n');
   
+  // Show platform-specific paths
+  console.log(`Platform detected: ${currentPlatform === 'darwin' ? 'macOS' : currentPlatform === 'win32' ? 'Windows' : 'Linux'}\n`);
+  
   console.log('Option 1: NPM Package (Recommended for end users)');
-  console.log('Add this to your ~/.cursor/mcp.json:');
+  console.log(`Add this to your Cursor MCP config (${cursorPath}):`);
   console.log(JSON.stringify({
     servers: {
-      "va-component-monitor": {
+      "va-design-system-monitor": {
         command: "npx",
-        args: ["-y", "@va-application-template/component-monitor"],
+        args: ["-y", "va-design-system-monitor"],
         env: {}
       }
     }
   }, null, 2));
   
-  console.log('\nAdd this to your ~/.config/claude-desktop/config.json:');
-  console.log(JSON.stringify({
-    mcp: {
-      servers: {
-        "va-component-monitor": {
-          command: "npx", 
-          args: ["-y", "@va-application-template/component-monitor"],
+  console.log(`\nAdd this to your Claude Desktop config (${claudePath}):`);
+  
+  // Claude Desktop config format depends on platform
+  if (currentPlatform === 'darwin' || currentPlatform === 'win32') {
+    // macOS and Windows use claude_desktop_config.json format
+    console.log(JSON.stringify({
+      mcpServers: {
+        "va-design-system-monitor": {
+          command: "npx",
+          args: ["-y", "va-design-system-monitor"],
           env: {}
         }
       }
-    }
-  }, null, 2));
+    }, null, 2));
+  } else {
+    // Linux uses config.json format
+    console.log(JSON.stringify({
+      mcp: {
+        servers: {
+          "va-design-system-monitor": {
+            command: "npx", 
+            args: ["-y", "va-design-system-monitor"],
+            env: {}
+          }
+        }
+      }
+    }, null, 2));
+  }
   
   console.log('\n\nOption 2: Local Development');
-  console.log('Add this to your ~/.cursor/mcp.json:');
+  console.log(`Add this to your Cursor MCP config (${cursorPath}):`);
   console.log(JSON.stringify({
     servers: {
-      "va-component-monitor": {
+      "va-design-system-monitor": {
         command: "node",
         args: [MCP_SERVER_PATH],
-        env: {}
+        env: { NODE_ENV: 'production' }
       }
     }
   }, null, 2));
@@ -154,7 +235,7 @@ function main() {
   const useNpm = args.includes('--npm') || args.includes('-n');
   const manualOnly = args.includes('--manual') || args.includes('-m');
   
-  console.log('🚀 Setting up VA Component Monitor MCP Server...\n');
+  console.log('🚀 Setting up VA Design System Monitor MCP Server...\n');
   
   if (manualOnly) {
     printManualInstructions();

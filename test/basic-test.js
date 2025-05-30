@@ -3,7 +3,7 @@
 import { VAComponentMonitor } from '../lib/index.js';
 
 async function testBasicFunctionality() {
-  console.log('🧪 Testing VA Component Monitor...\n');
+  console.log('🧪 Testing VA Design System Monitor...\n');
   
   try {
     console.log('1. Creating VAComponentMonitor instance...');

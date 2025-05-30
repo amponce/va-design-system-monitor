@@ -10,7 +10,7 @@ We actively support the following versions with security updates:
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in VA Component Monitor, please report it responsibly:
+If you discover a security vulnerability in VA Design System Monitor, please report it responsibly:
 
 ### For Security Issues:
 - **Do NOT** create a public GitHub issue
