@@ -7,11 +7,7 @@
  * It copies necessary files and ensures proper structure for distribution.
  */
 
-<<<<<<< HEAD
-import { readFileSync, existsSync } from 'fs';
-=======
-import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync } from 'fs';
->>>>>>> 007e565 (MCP path changes per OS)
+import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
